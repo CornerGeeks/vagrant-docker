@@ -1,0 +1,233 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Vagrant
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+
+  body
+
+    article
+
+      section
+        h1 Is that a Vagrant in your Computer?
+        h3 Using Vagrant to set up your environment
+
+      section
+        h2 Introduction
+        h3 Timothy Lim
+        h4
+          a(href='https://twitter.com/thewheat') @thewheat
+        h4
+          a(href='http://thewheatfield.org') thewheatfield.org
+        h4
+          a(href='http://bruneigeekmeet.com') bruneigeekmeet.com
+        h4
+          a(href='http://cornergeeks.com') cornergeeks.com
+
+      section
+        h2 Let's start development!
+        h3 In Theory        
+        ol
+          li Go to website &amp; install requirements
+          li Code
+            br
+            img(src='images/type_keyboard.gif',style='width:70%')
+          li Profit!
+
+
+      section
+        h2 Let's start development!
+        h3 In Reality
+        p.bullet
+          ol.bullet
+            li Go to website
+            li Try to install requirements
+            li See something breaks
+            li Google Bing the problem
+            li Try to fix it
+            li Go to Step 2
+              p
+                img(src='images/bang_head_keyboard.gif')
+
+
+      section.vagrant
+        h2 Vagrant
+        h3 
+          a(href='vagrantup.com') vagrantup.com
+        div
+          h5 Create and configure reproducible &amp; portable development environments
+          p
+          p
+          p.bullet
+            strong.bullet How-To Use
+            ol.bullet
+              li.bullet Install
+              li.bullet Download configuration file (i.e. Vagrantfile). 
+                br
+                | Manual download or quickstart via command line
+                br
+                span.code vagrant init hashicorp/precise32
+              li.bullet Start the box
+                br
+                span.code vagrant up
+              li.bullet Environment set up perfectly and ready to go
+
+      section
+        h2 Where does the Vagrant environment live?
+        p.bullet
+        ul.bullet
+          li Depends on 
+            a(href='http://docs.vagrantup.com/v2/providers/') the provider
+          li Typically Virtual Machines: 
+            a(href='http://www.virtualbox.org/') VirtualBox, 
+            a(href='http://www.vmware.com/') VMWare
+          li But 
+            a(href='https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins#providers') many more 
+            | including 
+            a(href='https://github.com/mitchellh/vagrant-aws') AWS
+
+      section
+        h2 Vagrant Terminology
+        ol.bullet
+          li.bullet
+            b Boxes: 
+            ul
+              li base operating system image to create the Vagrant environment from (e.g. .iso file to install an OS)
+          li.bullet
+            b Vagrantfile:
+            ul
+              li configuration file that creates a Vagrant Environment from a Box
+          li.bullet
+            b Vagrant Environment:
+            ul
+              li the actual running instance of a environment built from a Box via a Vagrantfile
+          li.bullet
+            b Providers: 
+            ul
+              li where the Vagrant Environment actually runs
+              li specified in the Vagrantfile
+
+      section
+        h2 Vagrantfile
+        h3 configuration file
+        p.bullet
+        ul.bullet
+          li.bullet
+            b 
+            a(href='http://docs.vagrantup.com/v2/getting-started/boxes.html') Box
+            | : base OS image to create environment from
+          li.bullet 
+            b Environment settings
+            | : Name, memory usage
+          li.bullet 
+            b 
+            a(href='http://docs.vagrantup.com/v2/getting-started/networking.html') Networking
+            | : Port forward to be accessible from host
+          li.bullet 
+            b 
+            a(href='http://docs.vagrantup.com/v2/getting-started/synced_folders.html') Synced Folders
+            | : by default 
+            span(class='code') /vagrant
+            |  in the Vagrant environment is linked to 
+            | host machine's filesystem where the Vagrantfile is
+          li.bullet
+            b 
+            a(href='http://docs.vagrantup.com/v2/getting-started/provisioning.html') Provisioning
+            | : install your tech stack
+
+      sectopm
+        h2 Vagrantfile
+        h3 sample
+        pre(class='code',style='text-align: left; font-size: smaller',)
+          | Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+          |    config.vm.box = "hashicorp/precise32"
+          |    config.vm.hostname = "GDGBNdevfest2014"
+          br
+          |    config.vm.network "forwarded_port", guest: 80, host: 8000
+          |    config.vm.network "forwarded_port", guest: 8080, host: 8080
+          |    config.vm.network "private_network", ip: "192.168.10.19"
+          br
+          |    config.vm.synced_folder "www", "/var/www"
+          |    config.vm.synced_folder "var_cache_apt", "/var/cache/apt/"
+          br
+          |    config.vm.provision "shell", :path => "setup.sh"
+          |  end
+
+      section
+        h2 Vagrant Commands
+        ul
+          li Initialize Vagrantfile from vagrantcloud.com
+            br
+            span(class='code') vagrant init hashicorp/precise32
+          li Start Machine
+            br
+            span(class='code') vagrant up
+          li Suspend Machine (your files are safe)
+            br
+            span(class='code') vagrant halt
+          li Nuke it all!
+            br
+            span(class='code') vagrant destroy
+          li SSH into its heart (Windows may need Putty)
+            br
+            span(class='code') vagrant ssh 
+
+      section
+        h2 Vagrant Commands
+        ul.bullet
+          li Provision, we must (runs first time with vagrant up)
+            br
+            span(class='code') vagrant provision
+          li.bullet Box Managment 
+            br
+            span(class='code') vagrant box
+            ul
+              li All locally downloaded boxes
+                br
+                span(class='code') vagrant box list
+
+      section
+        h2 Vagrant Cloud
+        h3
+          a(href="https://vagrantcloud.com") vagrantcloud.com
+        ul
+          li Search / Download existing boxes
+          li Share your boxes
+
+      section
+        h2 Problems
+        h3 It's never just a walk in the clouds
+        p.bullet
+        ul.bullet
+          li.bullet
+            b Corrupted boxes: 
+            ul
+              li Need to manually delete locally downloaded box
+          li.bullet
+            b Shared folder not set up: 
+            | Google Bing it
+          li.bullet
+            b Incompatible Vagrant and VirtualBox: 
+            ul
+              li Update to latest else slowly downgrade VirtualBox
+          li.bullet
+            b git cloning UNIX vs Windows line endings: 
+            ul
+              li dos2unix
+              li
+                span(class='code') git config --global core.autocrlf input
+          li.bullet
+            b Possibly time consuming and painful to setup
+
+      section
+        h1 And that's Vagrant in a nutshell
+        h3 Hopefully....
+
+      section
+        h1 But wait, there's more!
+
+
+    script(src='build/build.js')
