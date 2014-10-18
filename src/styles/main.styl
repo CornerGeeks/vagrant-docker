@@ -10,13 +10,19 @@
 body{
 	background-color: rgb(234,234,234);
 }
-.bespoke-slide.vagrant > div{
+.bespoke-slide.vagrant > div
+, .bespoke-slide.docker > div {
 	background-color: rgba(255,255,255,0.7);
 	padding: 1em;
 }
 section.vagrant{
 	background-image: url('/images/vagrant.png');
 	background-position: top;
+}
+section.docker{
+	background-image: url('/images/docker.png');
+	background-position: bottom;
+	background-repeat: no-repeat;
 }
 ol,ul {
 	text-align: left
