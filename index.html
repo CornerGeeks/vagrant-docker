@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Vagrant and Docker: Is that a Vagrant in your Computer? / Computer Whaling (Using Vagrant/Docker to set up your environment)</title>
+    <link rel="stylesheet" type="text/css" href="build/build.css">
+  </head>
+  <body>
+    <article>
+      <section>
+        <h1>Is that a Vagrant in your Computer?</h1>
+        <h3>Using Vagrant to set up your environment</h3>
+        <h4>Slides &amp; Examples: </h4>
+        <p><a href="https://github.com/CornerGeeks/">https://github.com/CornerGeeks/</a></p>
+        <p><a href="https://github.com/CornerGeeks/vagrant-docker">Slides</a> / <a href="https://github.com/CornerGeeks/docker-intro">Dockerfiles</a> / <a href="https://github.com/CornerGeeks/vagrant-intro">Vagrantfile</a></p>
+      </section>
+      <section>
+        <h2>Introduction</h2>
+        <h3>Timothy Lim</h3>
+        <h4><a href="https://twitter.com/thewheat">@thewheat</a></h4>
+        <h4><a href="https://plus.google.com/+TimothyLimSH">+TimothyLimSH</a></h4>
+        <h4><a href="http://thewheatfield.org">thewheatfield.org</a></h4>
+        <h4><a href="http://bruneigeekmeet.com">bruneigeekmeet.com</a></h4>
+      </section>
+      <section>
+        <h2>Let's start development!</h2>
+        <h3>In Theory        </h3>
+        <ol>
+          <li>Go to website &amp; install requirements</li>
+          <li>Code<br><img src="images/type_keyboard.gif" style="width:70%"></li>
+          <li>Profit!</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Let's start development!</h2>
+        <h3>In Reality</h3>
+        <p class="bullet">
+          <ol class="bullet">
+            <li>Go to website</li>
+            <li>Try to install requirements</li>
+            <li>See something breaks</li>
+            <li>Google Bing the problem</li>
+            <li>Try to fix it</li>
+            <li>Go to Step 2
+              <p><img src="images/bang_head_keyboard.gif"></p>
+            </li>
+          </ol>
+        </p>
+      </section>
+      <section class="vagrant">
+        <h2>Vagrant</h2>
+        <h3><a href="vagrantup.com">vagrantup.com</a></h3>
+        <div>
+          <h5>Create and configure reproducible &amp; portable development environments</h5>
+          <p></p>
+          <p></p>
+          <p class="bullet"><strong class="bullet">How-To Use</strong>
+            <ol class="bullet">
+              <li class="bullet">Install</li>
+              <li class="bullet">Download configuration file (i.e. Vagrantfile). <br>Manual download or quickstart via command line<br><span class="code">vagrant init hashicorp/precise32</span></li>
+              <li class="bullet">Start the box<br><span class="code">vagrant up</span></li>
+              <li class="bullet">Environment set up perfectly and ready to go</li>
+            </ol>
+          </p>
+        </div>
+      </section>
+      <section>
+        <h2>Where does the Vagrant environment live?</h2>
+        <p class="bullet"></p>
+        <ul class="bullet">
+          <li>Depends on <a href="http://docs.vagrantup.com/v2/providers/">the provider</a></li>
+          <li>Typically Virtual Machines: <a href="http://www.virtualbox.org/">VirtualBox, </a><a href="http://www.vmware.com/">VMWare</a></li>
+          <li>But <a href="https://github.com/mitchellh/vagrant/wiki/Available-Vagrant-Plugins#providers">many more </a>including <a href="https://github.com/mitchellh/vagrant-aws">AWS</a></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Vagrant Terminology</h2>
+        <ol class="bullet">
+          <li class="bullet"><b>Boxes: </b>
+            <ul>
+              <li>base operating system image to create the Vagrant environment from (e.g. .iso file to install an OS)</li>
+            </ul>
+          </li>
+          <li class="bullet"><b>Vagrantfile:</b>
+            <ul>
+              <li>configuration file that creates a Vagrant Environment from a Box</li>
+            </ul>
+          </li>
+          <li class="bullet"><b>Vagrant Environment:</b>
+            <ul>
+              <li>the actual running instance of a environment built from a Box via a Vagrantfile</li>
+            </ul>
+          </li>
+          <li class="bullet"><b>Providers: </b>
+            <ul>
+              <li>where the Vagrant Environment actually runs</li>
+              <li>specified in the Vagrantfile</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>Vagrantfile</h2>
+        <h3>configuration file</h3>
+        <p class="bullet"></p>
+        <ul class="bullet">
+          <li class="bullet"><b></b><a href="http://docs.vagrantup.com/v2/getting-started/boxes.html">Box</a>: base OS image to create environment from</li>
+          <li class="bullet"><b>Environment settings</b>: Name, memory usage</li>
+          <li class="bullet"><b></b><a href="http://docs.vagrantup.com/v2/getting-started/networking.html">Networking</a>: Port forward to be accessible from host</li>
+          <li class="bullet"><b></b><a href="http://docs.vagrantup.com/v2/getting-started/synced_folders.html">Synced Folders</a>: by default <span class="code">/vagrant</span> in the Vagrant environment is linked to 
+            host machine's filesystem where the Vagrantfile is
+          </li>
+          <li class="bullet"><b></b><a href="http://docs.vagrantup.com/v2/getting-started/provisioning.html">Provisioning</a>: install your tech stack</li>
+        </ul>
+      </section>
+      <sectopm>
+        <h2>Vagrantfile</h2>
+        <h3>sample</h3>
+        <pre style="text-align: left; font-size: smaller" class="code">Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+   config.vm.box = "hashicorp/precise32"
+   config.vm.hostname = "GDGBNdevfest2014"<br>   config.vm.network "forwarded_port", guest: 80, host: 8000
+   config.vm.network "forwarded_port", guest: 8080, host: 8080
+   config.vm.network "private_network", ip: "192.168.10.19"<br>   config.vm.synced_folder "www", "/var/www"
+   config.vm.synced_folder "var_cache_apt", "/var/cache/apt/"<br>   config.vm.provision "shell", :path => "setup.sh"
+ end</pre>
+      </sectopm>
+      <section>
+        <h2>Vagrant Commands</h2>
+        <ul>
+          <li>Initialize Vagrantfile from vagrantcloud.com<br><span class="code">vagrant init hashicorp/precise32</span></li>
+          <li>Start Machine<br><span class="code">vagrant up</span></li>
+          <li>Suspend Machine (your files are safe)<br><span class="code">vagrant halt</span></li>
+          <li>Nuke it all!<br><span class="code">vagrant destroy</span></li>
+          <li>SSH into its heart (Windows may need Putty)<br><span class="code">vagrant ssh </span></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Vagrant Commands</h2>
+        <ul class="bullet">
+          <li>Provision, we must (runs first time with vagrant up)<br><span class="code">vagrant provision</span></li>
+          <li class="bullet">Box Managment <br><span class="code">vagrant box</span>
+            <ul>
+              <li>All locally downloaded boxes<br><span class="code">vagrant box list</span></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Vagrant Cloud</h2>
+        <h3><a href="https://vagrantcloud.com">vagrantcloud.com</a></h3>
+        <ul>
+          <li>Search / Download existing boxes</li>
+          <li>Share your boxes</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Problems</h2>
+        <h3>It's never just a walk in the clouds</h3>
+        <p class="bullet"></p>
+        <ul class="bullet">
+          <li class="bullet"><b>Corrupted boxes: </b>
+            <ul>
+              <li>Need to manually delete locally downloaded box</li>
+            </ul>
+          </li>
+          <li class="bullet"><b>Shared folder not set up: </b>Google Bing it</li>
+          <li class="bullet"><b>Incompatible Vagrant and VirtualBox: </b>
+            <ul>
+              <li>Update to latest else slowly downgrade VirtualBox</li>
+            </ul>
+          </li>
+          <li class="bullet"><b>git cloning UNIX vs Windows line endings: </b>
+            <ul>
+              <li>dos2unix</li>
+              <li><span class="code">git config --global core.autocrlf input</span></li>
+            </ul>
+          </li>
+          <li class="bullet"><b>Possibly time consuming and painful to setup</b></li>
+        </ul>
+      </section>
+      <section>
+        <h1>And that's Vagrant in a nutshell</h1>
+        <h3>Hopefully....</h3>
+      </section>
+      <section>
+        <h1>But wait, there's more!</h1>
+      </section>
+      <section>
+        <h1>Computer Whaling</h1>
+        <h3>Using Docker to set up your environment</h3>
+      </section>
+      <section class="docker">
+        <h2>Docker</h2>
+        <h3><a href="http://docker.io/">docker.io</a></h3>
+        <p class="bullet"></p>
+        <div class="bullet">
+          <ul>
+            <li>Open platform for developers and sysadmins to build, ship, and run distributed applications.</li>
+            <li>Portable and lightweight (FAST!)</li>
+            <li class="bullet">Focused more on deployment and production</li>
+            <li class="bullet">Development solutions exist such as  <a href="http://www.fig.sh/">Fig</a></li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <h2>Docker Terminology</h2>
+        <h3><a href="https://docs.docker.com/introduction/understanding-docker/">Understanding Docker</a></h3>
+        <ul>
+          <li><b>Images: </b>(build component)
+            <ul>
+              <li>Read-only template to create containers from</li>
+              <li>Similar to Vagrant Boxes</li>
+            </ul>
+          </li>
+          <li> <b>Registries: </b>(distribution component)
+            <ul>
+              <li>Storage of images</li>
+              <li>Public <a href="http://hub.docker.com/">Docker Hub</a> or Private <a href="https://github.com/docker/docker-registry">Docker Registry</a></li>
+            </ul>
+          </li>
+          <li><b>Containers: </b>(run component)
+            <ul>
+              <li>Seen has processes on your computer</li>
+              <li>Once it finished, it will close</li>
+            </ul>
+          </li>
+          <li><b>Dockerfile: </b>
+            <ul>
+              <li>a configuration file to build Docker Images</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Docker Commands (1)</h2>
+        <ul>
+          <li>Search for a docker image
+            <div class="code">docker search *search string*</div>
+          </li>
+          <li>Download image locally
+            <div class="code">docker pull user/imagename:tag</div>
+          </li>
+          <li>Run commands in Container
+            <div class="code">docker run user/imagename<br>&nbsp;&nbsp;command_to_run arguments_to_command</div>
+          </li>
+          <li>Get bash shell in Container
+            <div class="code">docker run -t -i user/imagename /bin/bash</div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Docker Commands (2)</h2>
+        <ul>
+          <li>Save changes
+            <div class="code">docker commit container_id<br>&nbsp;&nbsp;-m="message for the commit"<br>&nbsp;&nbsp;-a="name of author"<br>&nbsp;&nbsp;user/imagename:tag</div>
+          </li>
+          <li>Listing containers
+            <div class="code">
+              <div>docker ps -l  # Last Running</div>
+              <div>docker ps &nbsp;&nbsp; # Currently running</div>
+              <div>docker ps -a  # All</div>
+            </div>
+          </li>
+          <li>Stop Container
+            <div class="code">docker stop container_id_or_name</div>
+          </li>
+          <li>List all downloaded Images          
+            <div class="code">docker images</div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Docker Commands (3)</h2>
+        <ul>
+          <li>Inspect
+            <div class="code">docker inspect container_name_or_id</div>
+          </li>
+          <li>Deleting
+            <div class="code">
+              <div>docker rm container_name_or_id</div>
+              <div>docker rmi image_name_or_id</div>
+            </div>
+          </li>
+          <li>Build image from a Dockerfile
+            <div class="code"># in folder containing Dockerfile</div>
+            <div class="code">docker build -t image_name . </div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Dockerfile</h2>
+        <ul>
+          <li><span class="code">FROM</span> user/imagename:tag (specify base image)</li>
+          <li><span class="code">RUN</span> echo "Run install commands e.g. apt-get install"</li>
+          <li><span class="code">WORKDIR</span> /default/path/for/all/things</li>
+          <li><span class="code">CMD</span> default action to take when running container</li>
+          <li><span class="code">ENTRYPOINT</span> enables whole container to runs as if it was an executable</li>
+          <li><span class="code">EXPOSE</span> Port#1 Port#2</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Mapping ports</h2>
+        <ul>
+          <li>Ports of services in container to be exposed to the host machine</li>
+          <li>Auto mapped
+            <div class="code">docker run <br>&nbsp;&nbsp;-P training/webapp python app.py</div>
+          </li>
+          <li>Manually mapped
+            <div class="code">docker run<br>&nbsp;&nbsp;-p hostPort:ContainerPort <br>&nbsp;&nbsp;-p 8080:80<br>&nbsp;&nbsp;training/webapp python app.py</div>
+          </li>
+          <li>See port mapping
+            <div class="code">docker port container_id</div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Working Directory</h2>
+        <ul>
+          <li>Specify where to start any <span class="code">RUN</span> , <span class="code">CMD</span> or <span class="code">ENTRYPOINT</span><br><br>
+            <div class="code">docker run <br>&nbsp;&nbsp;-p 8080:8080 -p 35729:35729<br>&nbsp;&nbsp;-w "/slides/presentation-tabs/" <br>&nbsp;&nbsp;devfest/node<br>&nbsp;&nbsp;gulp serve</div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Linking containers</h2>
+        <ul>
+          <li>For interaction between containers</li>
+          <li>Name a container and reference it
+            <div class="code">
+              <div>docker run --name db training/postgres</div><br>
+              <div>docker run -P --name web --link db:thedb <br>&nbsp;&nbsp;training/webapp python app.py              </div><br>
+              <div>docker run --name web --link db:thedb <br>&nbsp;&nbsp;training/webapp cat /etc/hosts</div><br>
+              <div>172.17.0.32 thedb</div>
+            </div>
+          </li>
+          <li>the 'db' container must have necessary ports EXPOSEd from the originating Dockerfile</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Managing Data in Containers</h2>
+        <h3>1. Data Volumes </h3>
+        <ul>
+          <li>Persist until no containers use them (non host file mounts)</li>
+          <li>Changes not included when you update an image</li>
+          <li>Examples:
+            <ul>
+              <li>Create a /webapp folder in the container
+                <div class="code">docker run -d -P --name web -v /webapp <br>&nbsp;&nbsp;training/webapp python app.py</div>
+                <li>Mount host file system in the container</li>
+                <div class="code">docker run -d -P --name web <br>&nbsp;&nbsp;-v /host/webapp:/container/webapp <br>&nbsp;&nbsp;training/webapp python app.py               </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Managing Data in Containers</h2>
+        <h3>2. Data Volume Containers</h3>
+        <ul>
+          <li>Containers that act solely as a data volume</li>
+          <li>Creation
+            <div class="code">docker run -d -v /dbdata --name dbdata <br>&nbsp;&nbsp;training/postgres echo Data-only container</div>
+          </li>
+          <li>Usage
+            <div class="code">docker run -d --volumes-from dbdata<br>&nbsp;&nbsp;--name db1 training/postgres</div>
+            <div class="code">docker run -d --volumes-from dbdata<br>&nbsp;&nbsp;--name db2 training/postgres</div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Findings</h2>
+        <ul class="bullet">
+          <li class="bullet">Docker is more complicated as whole</li>
+          <li class="bullet">Docker provision is easier</li>
+          <li class="bullet">Allows quicker testing and experimentation</li>
+          <li class="bullet">You can work with same container that will be pushed to production</li>
+          <li class="bullet">Much smaller footprint in terms of CPU and Disk Space used</li>
+          <li class="bullet">It's all the rage now</li>
+        </ul>
+      </section>
+      <section>
+        <h2>In conclusion</h2>
+        <h3>Dock all the things!</h3>
+        <ul>
+          <li><a href="https://github.com/boot2docker/boot2docker">boot2docker </a>is your friend for non Linux users!</li>
+          <li>No reason not to learn it        </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Acknowledgements &amp; Links</h2>
+        <ol>
+          <li><a href="http://vagrantup.com/">vagrantup.com </a></li>
+          <li><a href="http://docker.io/">docker.io</a>: <a href="https://www.docker.com/tryit/">Interactive Docker Tutorial</a></li>
+          <li><a href="http://stackoverflow.com/questions/16647069/should-i-use-vagrant-or-docker-io-for-creating-an-isolated-environment">Should I use Vagrant or Docker.io for creating an isolated environment?</a></li>
+          <li><a href="http://chadoh.com/why-you-shouldnt-use-vagrant-real-talk-from-a-vagrant-burnout">Why You Shouldn’t Use Vagrant: Real talk from a Vagrant burn-out</a></li>
+          <li><a href="https://github.com/boot2docker/boot2docker">boot2docker (for OSX and Windows)</a></li>
+          <li><a href="https://github.com/wsargent/docker-cheat-sheet">Docker Cheat Sheet          </a></li>
+          <li><a href="http://blog.thoward37.me/articles/where-are-docker-images-stored/">Where are Docker Images Stored</a></li>
+          <li><a href="http://www.altviz.co/blog/using-docker-as-a-development-environment">Using Docker as a Development Environment</a></li>
+          <li><a href="http://giphy.com/">giphy.com              </a></li>
+          <li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server">Installing node on Ubuntu</a></li>
+        </ol>
+      </section>
+      <section>
+        <h2>The End</h2>
+        <h3>Thanks for your time and enjoy the rest of the event!</h3>
+        <h4><a href="https://twitter.com/thewheat">@thewheat</a></h4>
+        <h4><a href="https://plus.google.com/+TimothyLimSH">+TimothyLimSH</a></h4>
+        <h4><a href="http://thewheatfield.org">thewheatfield.org</a></h4>
+        <h4><a href="http://bruneigeekmeet.com">bruneigeekmeet.com</a></h4>
+      </section>
+    </article>
+    <script src="build/build.js"></script>
+  </body>
+</html>
