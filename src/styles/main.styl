@@ -7,8 +7,52 @@
 @import 'prism/themes/prism-okaidia.css'
 // Check out "bower_components/prism/themes/" for available themes
 
+* {
+	line-height: 1.3em;
+	font-size: 20px;
+}
+h1,h2,h3,h4,h5{
+	font-family: helvetica,arial,sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	
+}
+h1{
+	font-size: 72px;
+	line-height: 82px;
+	letter-spacing: -2px;
+	margin-bottom: 16px;
+}
+h2{
+	font-size: 40px;
+	font-weight: 800;
+}
+h3{
+	font-size: 24px;
+	font-weight: 400;
+	margin-bottom: 24px;
+	color: #606060;	
+}
+h5{
+	font-size: 20px;
+}
+
+a {
+	color: #0089f3;
+	text-decoration: none;
+}
 body{
+	font-family: helvetica,arial,sans-serif;
+	font-size: 18px;
+	color: #404040;	
+}
+
+body, .bespoke-parent{
 	background-color: rgb(234,234,234);
+	color: #404040;	
+}
+.bespoke-slide{
+	text-shadow: none;
 }
 .bespoke-slide.vagrant > div
 , .bespoke-slide.docker > div {
@@ -24,23 +68,27 @@ section.docker{
 	background-position: bottom;
 	background-repeat: no-repeat;
 }
+
 ol,ul {
 	text-align: left
-}
-ol, ul {
 	margin-left: 2em;
 }
-ul {
-	list-style-type: circle;	
+ol li{
+	list-style-type: decimal;
+}
+ul li{
+	list-style-type: circle;
+}
+li:before{
+	content: '';
 }
 li{
 	margin-bottom: 0.2em;
+	padding-left: 0;
 }
-* {
-	line-height: 1.4em;
-}
+
 .code {
-	background-color: #000;
+	background-color: #000 !important; 
 	color: #0f0;
 	padding: 3px 5px;
 	font-family: monospace;
