@@ -90,8 +90,8 @@ gulp.task('connect', ['build'], function(done) {
       port: 35730
     }
   });
-
-  opn('http://localhost:8080', done);
+  // change ports so don't conflict with docker containers or vagrant envs
+  opn('http://localhost:8282', done);
 });
 
 gulp.task('watch', function() {
